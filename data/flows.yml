@@ -1,11 +1,4 @@
 flows:
-  transfer_money:
-    description: Help users send money to friends and family.
-    steps:
-      - collect: recipient
-      - collect: amount
-        description: the number of US dollars to send
-      - action: utter_transfer_complete
   tell_office_hours:
     description: User wants to know instructor office hours.
     steps:

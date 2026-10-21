@@ -1,6 +1,6 @@
 recipe: default.v1
 language: en
-assistant_id: alternate-flam
+assistant_id: little-pascal
 pipeline:
 - name: CompactLLMCommandGenerator
   llm:
