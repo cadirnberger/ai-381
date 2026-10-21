@@ -1,0 +1,22 @@
+flows:
+  transfer_money:
+    description: Help users send money to friends and family.
+    steps:
+      - collect: recipient
+      - collect: amount
+        description: the number of US dollars to send
+      - action: utter_transfer_complete
+  tell_office_hours:
+    description: User wants to know instructor office hours.
+    steps:
+      - action: utter_office_hours
+
+  tell_syllabus_location:
+    description: User wants to know where to find the course syllabus.
+    steps:
+      - action: utter_syllabus_location
+
+  tell_assignment_deadline:
+    description: User wants to know when an assignment is due.
+    steps:
+      - action: utter_assignment_deadline
