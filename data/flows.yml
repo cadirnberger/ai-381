@@ -21,16 +21,16 @@ flows:
     steps:
       - action: utter_assignment_deadline
   submit_it_ticket:
-  description: User wants to report a tech problem or request IT help.
-  steps:
-    - collect: issue_category
-    - collect: issue_description
-    - collect: urgency
-      next:
-        - if: slots.urgency == "high"
-          then:
-            - action: utter_escalate
-            - link: pattern_human_handoff
-        - else:
-            - action: utter_ticket_summary
-              next: END
+    description: User wants to report a tech problem or request IT help.
+    steps:
+      - collect: issue_category
+      - collect: issue_description
+      - collect: urgency
+        next:
+          - if: slots.urgency == "high"
+            then:
+              - action: utter_escalate
+              - link: pattern_human_handoff
+          - else:
+              - action: utter_ticket_summary
+                next: END
