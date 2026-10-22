@@ -42,14 +42,19 @@ action_endpoint:
 #  queue: queue
 
 # Allow rephrasing of responses using a Rasa-hosted model
-nlg:
-  type: rephrase
-  llm:
-    model_group: rasa_command_generation_model
+# nlg:
+#   type: rephrase
+#   llm:
+#     model_group: rasa_command_generation_model
 
-model_groups:
-  - id: rasa_command_generation_model
-    models:
-      - provider: rasa
-        model: rasa/command-generator-llama-3.1-8b-instruct
-        api_base: "https://tutorial-llm.rasa.ai"
+  model_groups:
+#   - id: rasa_command_generation_model
+#     models:
+#       - provider: rasa
+#         model: rasa/command-generator-llama-3.1-8b-instruct
+#         api_base: "https://tutorial-llm.rasa.ai"
+    - id: rasa_command_generation_model
+      models:
+        - provider: gemini
+          model: gemini-2.5-flash
+          api_key: ${GEMINI_API_KEY}
