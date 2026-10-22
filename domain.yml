@@ -9,11 +9,57 @@ slots:
     type: float
     mappings:
       - type: from_llm
+  issue_category:
+    type: categorical
+    values: ["hardware", "software", "account_access", "other"]
+    mappings:
+      - type: from_llm
+  issue_description:
+    type: text
+    mappings:
+      - type: from_llm
+  urgency:
+    type: categorical
+    values: ["low", "medium", "high"]
+    mappings:
+      - type: from_llm
 
 responses:
+  utter_ask_recipient:
+    - text: "Who would you like to send money to?"
+
+  utter_ask_amount:
+    - text: "How much money would you like to send?"
+
+  utter_transfer_complete:
+    - text: "All done. {amount} has been sent to {recipient}."
+
+  utter_free_chitchat_response:
+    - text: "placeholder"
+      metadata:
+        rephrase: True
+        rephrase_prompt: |
+          The following is a conversation with an AI assistant built with Rasa.
+          The assistant can help the user transfer money.
+          The assistant is helpful, creative, clever, and very friendly.
+          The user is making small talk, and the assistant should respond, keeping things light.
+          Context / previous conversation with the user:
+          {{history}}
+          {{current_input}}
+          Suggested AI Response:
   utter_office_hours:
     - text: "Office hours are Tue/Thu 2–3pm in Ford 210, or by appointment."
   utter_syllabus_location:
     - text: "The syllabus is posted on the course Canvas page, under Files."
   utter_assignment_deadline:
     - text: "Check the Canvas calendar for exact due dates — they vary by assignment."
+  utter_ask_issue_category:
+    - text: "What kind of issue is this — hardware, software, or account access?"
+  utter_ask_issue_description:
+    - text: "Briefly describe the problem."
+  utter_ask_urgency:
+    - text: "How urgent is this — low, medium, or high?"
+  utter_escalate:
+    - text: "This looks urgent — flagging it for immediate review."
+  utter_ticket_summary:
+    - text: "Ticket created: {issue_category} issue — '{issue_description}', urgency: {urgency}."
