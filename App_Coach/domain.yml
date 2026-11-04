@@ -1,35 +1,89 @@
 version: "3.1"
 
 slots:
-  recipient:
-    type: text
+  app_choice:
+    type: categorical
+    values:
+      - video_call
+      - medication_reminder
     mappings:
       - type: from_llm
-  amount:
+
+  practice_mode:
+    type: bool
+    mappings:
+      - type: from_llm
+  step_reply:
+    type: categorical
+    values:
+      - done
+      - repeat
+      - stuck
+    mappings:
+      - type: from_llm
+
+  step_index:
     type: float
+    initial_value: 0
     mappings:
-      - type: from_llm
+      - type: controlled
+  total_steps:
+    type: float
+    initial_value: 0
+    mappings:
+      - type: controlled
+
+  extra_help:
+    type: bool
+    initial_value: false
+    mappings:
+      - type: controlled
+  lesson_complete:
+    type: bool
+    initial_value: false
+    mappings:
+      - type: controlled
 
 responses:
-  utter_ask_recipient:
-    - text: "Who would you like to send money to?"
-
-  utter_ask_amount:
-    - text: "How much money would you like to send?"
-
-  utter_transfer_complete:
-    - text: "All done. {amount} has been sent to {recipient}."
-
   utter_free_chitchat_response:
-    - text: "placeholder"
-      metadata:
-        rephrase: True
-        rephrase_prompt: |
-          The following is a conversation with an AI assistant built with Rasa.
-          The assistant can help the user transfer money.
-          The assistant is helpful, creative, clever, and very friendly.
-          The user is making small talk, and the assistant should respond, keeping things light.
-          Context / previous conversation with the user:
-          {{history}}
-          {{current_input}}
-          Suggested AI Response:
+  - text: "placeholder"
+    metadata:
+      rephrase: True
+      rephrase_prompt: |
+        The following is a conversation with a friendly AI assistant called App Coach.
+        The assistant helps older adults learn to use new apps, one small step at a time.
+        The assistant is warm, patient, and speaks in short, clear sentences.
+        The user is making small talk. Respond briefly and kindly, then invite the user to continue the lesson.
+        Context / previous conversation with the user:
+        {{history}}
+        {{current_input}}
+        Suggested AI Response:
+  utter_ask_app_choice:
+    - text: "Which app would you like to learn? Video calls, or medication reminders?"
+      buttons:
+        - title: "Video calls"
+          payload: "/SetSlots(app_choice=video_call)"
+        - title: "Medication reminder"
+          payload: "/SetSlots(app_choice=medication_reminder)"
+  utter_ask_practice_mode:
+  - text: "Do you want me to walk you through it, or would you like to practice on your own?"
+    buttons:
+      - title: "Walk me through it"
+        payload: "/SetSlots(practice_mode=false)"
+      - title: "Let me practice"
+        payload: "/SetSlots(practice_mode=true)"
+  utter_ask_step_reply:
+  - text: "Say 'done' when you have finished this step. Say 'again' to hear it once more, or 'stuck' if you need help."
+    buttons:
+      - title: "Done"
+        payload: "/SetSlots(step_reply=done)"
+      - title: "Say it again"
+        payload: "/SetSlots(step_reply=repeat)"
+      - title: "I'm stuck"
+        payload: "/SetSlots(step_reply=stuck)"
+actions:
+  - action_start_lesson
+  - action_present_step
+  - action_handle_reply
+  - action_finish_lesson
+  - action_where_am_i

@@ -1,8 +1,45 @@
 flows:
-  transfer_money:
-    description: Help users send money to friends and family.
+  learn_app:
+    name: learn an app
+    description: >
+      Coach the user step by step through learning how to use a new app,
+      such as making video calls or setting a medication reminder.
+      Use when the user wants to learn, set up, install, practice, or get
+      help using an app.
     steps:
-      - collect: recipient
-      - collect: amount
-        description: the number of US dollars to send
-      - action: utter_transfer_complete
+      - collect: app_choice
+        description: "The app the user wants to learn: video_call or medication_reminder."
+      - collect: practice_mode
+        description: >
+          true if the user wants to practice on their own with less help;
+          false if the user wants to be walked through step by step.
+      - action: action_start_lesson
+      - id: present
+        action: action_present_step
+
+      - id: ask_reply
+        collect: step_reply
+        ask_before_filling: true
+        description: >
+          What the user says about the current step: done if they finished it,
+          repeat if they want to hear it again, stuck if they need help.
+
+      - action: action_handle_reply
+        next:
+          - if: slots.lesson_complete
+            then: wrap_up
+          - else: reset_reply
+      - id: reset_reply
+        set_slots:
+          - step_reply: null
+        next: present
+
+      - id: wrap_up
+        action: action_finish_lesson
+  where_am_i:
+    name: where am I
+    description: >
+      The user asks which step they are on, how far along they are,
+      or how many steps are left in the current lesson.
+    steps:
+      - action: action_where_am_i     
