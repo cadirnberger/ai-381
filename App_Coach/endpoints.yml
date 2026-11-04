@@ -50,12 +50,6 @@ nlg:
 model_groups:
   - id: rasa_command_generation_model
     models:
-      - provider: gemini
-        model: gemini-3.8-flash
-        api_key: ${GEMINI_API_KEY}
-        timeout: 120
-#   - id: rasa_command_generation_model
-#     models:
-#       - provider: rasa
-#         model: rasa/command-generator-llama-3.1-8b-instruct
-#         api_base: "https://tutorial-llm.rasa.ai"
+      - provider: rasa
+        model: rasa/command-generator-llama-3.1-8b-instruct
+        api_base: "https://tutorial-llm.rasa.ai"

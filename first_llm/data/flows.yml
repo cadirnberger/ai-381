@@ -1,4 +1,16 @@
 flows:
+  tell_library_hours:
+    description: User wants to know the library's opening hours.
+    steps:
+      - action: utter_library_hours
+
+  check_room_availability:
+    description: User wants to check whether a study room is available to book.
+    steps:
+      - collect: room_type
+      - action: utter_please_wait_room_check
+      - action: action_check_room_availability
+      - action: utter_room_availability_result
   transfer_money:
     description: Help users send money to friends and family.
     steps:
