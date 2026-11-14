@@ -1,0 +1,28 @@
+services:
+  assistant:
+    image: europe-west3-docker.pkg.dev/rasa-releases/rasa-pro/rasa-pro:3.18.0
+    command: ["run", "--inspect"]
+    restart: unless-stopped
+    user: root
+    env_file: .env
+    volumes:
+      - ..:/app
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+      AUTH_USER: ${AUTH_USER}
+      AUTH_HASH: ${AUTH_HASH}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on:
+      - assistant
+
+volumes:
+  caddy_data:
