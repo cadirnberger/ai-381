@@ -9,6 +9,14 @@ flows:
   wordle_help:
     description: Give the user a hint or a short definition for the current Wordle word.
     steps:
-      - action: wordle_hint
-      - action: wordle_definition
+      - collect: hint_choice
+        description: whether the user wants a hint or a definition for the current Wordle word
+        next:
+          - if: slots.hint_choice == "definition"
+            then:
+              - action: wordle_definition
+                next: END
+          - else:
+              - action: wordle_hint
+                next: END
 
